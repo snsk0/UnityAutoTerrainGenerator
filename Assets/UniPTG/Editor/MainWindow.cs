@@ -13,12 +13,13 @@ namespace UniPTG.Editors
         private struct WindowSettigs
         {
             //GUI
+            public bool isFoldoutNoiseGenerator;
             public bool isFoldoutHeightmapGenerator;
             public bool isFoldoutTerrain;
             public bool isFoldoutAsset;
 
             //インデックス
-            public int noiseReaderIndex;
+            public int noiseIndex;
             public int heightmapIndex;
 
             //テレインパラメータ
@@ -78,12 +79,34 @@ namespace UniPTG.Editors
             _serializedObject.Update();
 
             //Noise, GeneratorListを取得
+            IReadOnlyList<NoiseGeneratorBase> noiseGenerators = GeneratorDatabase.GetNoiseGenerators();
             IReadOnlyList<HeightmapGeneratorBase> heightmapGenerators = GeneratorDatabase.GetHeightmapGenerators();
 
             //ノイズGUIContentを作成する TODO
+            _windowSettings.isFoldoutNoiseGenerator = EditorGUILayout.Foldout(_windowSettings.isFoldoutNoiseGenerator, "Noise Generator");
+            if (_windowSettings.isFoldoutNoiseGenerator)
+            {
+
+                //ノイズのGUIContentを作成する
+                List<GUIContent> gUIContents = new List<GUIContent>();
+                foreach (NoiseGeneratorBase generator in noiseGenerators)
+                {
+                    gUIContents.Add(new GUIContent(generator.GetType().Name));
+                }
+
+                //アルゴリズムの一覧表示
+                _windowSettings.noiseIndex = EditorGUILayout.IntPopup(
+                    new GUIContent("ノイズ"),
+                    _windowSettings.noiseIndex,
+                    gUIContents.ToArray(),
+                    Enumerable.Range(0, gUIContents.Count).ToArray());
+
+                //選択したindexからEditorを呼び出す
+                GeneratorDatabase.GetNoiseEditor(noiseGenerators[_windowSettings.noiseIndex]).OnInspectorGUI();
+            }
 
             //Heightmap関連項目
-            _windowSettings.isFoldoutHeightmapGenerator = EditorGUILayout.Foldout(_windowSettings.isFoldoutHeightmapGenerator, "HeightmapGenerator");
+            _windowSettings.isFoldoutHeightmapGenerator = EditorGUILayout.Foldout(_windowSettings.isFoldoutHeightmapGenerator, "Heightmap Generator");
             if (_windowSettings.isFoldoutHeightmapGenerator)
             {
 
@@ -102,7 +125,7 @@ namespace UniPTG.Editors
                     Enumerable.Range(0, gUIContents.Count).ToArray());
 
                 //選択したindexからEditorを呼び出す
-                GeneratorDatabase.GetEditorByGenerator(heightmapGenerators[_windowSettings.heightmapIndex]).OnInspectorGUI();
+                GeneratorDatabase.GetHeightmapEditor(heightmapGenerators[_windowSettings.heightmapIndex]).OnInspectorGUI();
             }
 
             //Terrain関連項目
@@ -169,16 +192,23 @@ namespace UniPTG.Editors
 
             if (GUILayout.Button(new GUIContent("テレインを生成する", "設定値からテレインを生成します")))
             {
-                HeightmapGeneratorBase generator = heightmapGenerators[_windowSettings.heightmapIndex];
-                float[,] heightMap = generator.Generate(_windowSettings.parameters.resolution);
+                //generatorを取得
+                NoiseGeneratorBase noiseGenerator = noiseGenerators[_windowSettings.noiseIndex];
+                HeightmapGeneratorBase heightmapGenerator = heightmapGenerators[_windowSettings.heightmapIndex];
 
-                //TerrainData data = TerrainGenerator.Generate(heightMap, _windowSettings.parameters.scale);
+                //ノイズを初期化
+                noiseGenerator.InitState();
 
-                /*if (_windowSettings.isCreateAsset)
+                //heightmapを生成
+                float[,] heightMap = new float[_windowSettings.parameters.resolution, _windowSettings.parameters.resolution];
+                heightmapGenerator.Generate(heightMap, _windowSettings.parameters.resolution, noiseGenerator);
+
+                TerrainData data = TerrainGenerator.Generate(heightMap, _windowSettings.parameters.scale);
+
+                if (_windowSettings.isCreateAsset)
                 {
                     AssetDatabase.CreateAsset(data, _windowSettings.assetPath + "/" + _windowSettings.assetName + ".asset");
                 }
-                */
             }
         }
     }

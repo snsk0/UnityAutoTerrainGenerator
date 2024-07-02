@@ -1,6 +1,10 @@
 namespace UniPTG.HeightmapGenerators
 {
-    public class GeneratorFbm : DefaultGeneratorBase
+    internal class GeneratorFbm : DefaultHeightmapGeneratorBase
     {
+        private protected override float CalculateHeight(float currentAmplitude, float value)
+        {
+            return currentAmplitude * value;
+        }
     }
 }

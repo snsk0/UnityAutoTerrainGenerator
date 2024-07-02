@@ -29,6 +29,7 @@ namespace UniPTG.Editors
         {
             _serializedObject.Update();
 
+            EditorGUILayout.PropertyField(_serializedObject.FindProperty("_noiseGenerators"));
             EditorGUILayout.PropertyField(_serializedObject.FindProperty("_heightmapGenerators"));
 
             _serializedObject.ApplyModifiedProperties();

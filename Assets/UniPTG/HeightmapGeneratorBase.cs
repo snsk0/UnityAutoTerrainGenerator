@@ -4,6 +4,6 @@ namespace UniPTG
 {
     public abstract class HeightmapGeneratorBase : ScriptableObject
     {
-        public abstract float[,] Generate(int size);
+        public abstract void Generate(float[,] heightmap, int size, INoiseReader noiseReader);
     }
 }

@@ -6,7 +6,7 @@ using UniPTG.Parameters;
 
 namespace UniPTG.Editors
 {
-    [CustomEditor(typeof(DefaultGeneratorBase), true)]
+    [CustomEditor(typeof(DefaultHeightmapGeneratorBase), true)]
     public class DefaultGeneratorBaseInspector : Editor
     {
         public override void OnInspectorGUI ()
@@ -26,8 +26,6 @@ namespace UniPTG.Editors
                 //設定値の上書き
                 param = inputProperty.objectReferenceValue as HeightmapGenerationParam;
             }
-
-            param.seed = EditorGUILayout.IntField(new GUIContent("シード値", "シード値を設定します"), param.seed);
 
             param.frequency = EditorGUILayout.FloatField(new GUIContent("周波数", "使用するノイズの周波数を設定します"), param.frequency);
             MessageType type = MessageType.Info;

@@ -15,20 +15,54 @@ namespace UniPTG
         [SerializeField]
         private List<MonoScript> _heightmapGenerators;
 
+        internal IReadOnlyList<Type> GetNoiseGeneratorTypes()
+        {
+            return _noiseGenerators?.Where((script) => script != null).Select((script) => script.GetClass()).ToList().AsReadOnly();
+        }
+
+        internal IReadOnlyList<MonoScript> GetNoiseGeneratorScripts()
+        {
+            return _noiseGenerators?.Where((script) => script != null).ToList().AsReadOnly();
+        }
+
         internal IReadOnlyList<Type> GetHeightmapGeneratorTypes()
         {
-            return _heightmapGenerators?.Select((script) => script.GetClass()).ToList().AsReadOnly();
+            return _heightmapGenerators?.Where((script) => script != null).Select((script) => script.GetClass()).ToList().AsReadOnly();
         }
 
         internal IReadOnlyList<MonoScript> GetHeightmapGeneratorScripts()
         {
-            return _heightmapGenerators?.AsReadOnly();
+            return _heightmapGenerators?.Where((script) => script != null).ToList().AsReadOnly();
         }
 
         internal void Update()
         {
-            //HeightmapGeneratorˆÈŠO‚ð”rœ‚·‚é
-            _heightmapGenerators = _heightmapGenerators.Where((script) => script.GetClass().IsSubclassOf(typeof(HeightmapGeneratorBase))).ToList();
+            //generatorˆÈŠOnull‘ã“ü
+            for(int i = 0; i < _noiseGenerators.Count; i++)
+            {
+                if(_noiseGenerators[i] == null)
+                {
+                    continue;
+                }
+
+                if (!_noiseGenerators[i].GetClass().IsSubclassOf(typeof(NoiseGeneratorBase))) 
+                {
+                    _noiseGenerators[i] = null;
+                }
+            }
+
+            for (int i = 0; i < _heightmapGenerators.Count; i++)
+            {
+                if (_heightmapGenerators == null)
+                {
+                    continue;
+                }
+
+                if (!_heightmapGenerators[i].GetClass().IsSubclassOf(typeof(HeightmapGeneratorBase)))
+                {
+                    _heightmapGenerators[i] = null;
+                }
+            }
 
             //‰i‘±‰»ˆ—
             Save(true);

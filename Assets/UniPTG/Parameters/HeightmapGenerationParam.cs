@@ -5,7 +5,6 @@ namespace UniPTG.Parameters
     internal class HeightmapGenerationParam : ScriptableObject
     {
         public int noiseTypeIndex = 0;
-        public int seed = 0;
         public float frequency = 0;
         public bool isLinearScaling = false;
         public float amplitude = Mathf.MaxTerrainHeight;
