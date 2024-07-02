@@ -1,6 +1,8 @@
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEditor;
 using UniPTG.Parameters;
 
 namespace UniPTG.HeightmapGenerators
@@ -8,21 +10,68 @@ namespace UniPTG.HeightmapGenerators
     public abstract class DefaultGeneratorBase : HeightmapGeneratorBase
     {
         [SerializeField]
-        private protected HeightMapGeneratorParam _param;
+        private protected HeightmapGenerationParam _param;
 
         [SerializeField]
-        private protected HeightMapGeneratorParam _inputParam;
+        private protected HeightmapGenerationParam _inputParam;
 
         private void OnEnable()
         {
-            _param = CreateInstance<HeightMapGeneratorParam>();
+            //インスタンス化
+            _param = CreateInstance<HeightmapGenerationParam>();
+
+            //専用フォルダを取得
+            string path = Application.dataPath.Replace("Assets", "UserSettings/") + "UniPTG";
+
+            //ない場合作る
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            //ファイル名を追加
+            path += "/" + GetType().FullName + ".json";
+
+            //ファイルがないなら作成する
+            if (!File.Exists(path))
+            {
+                Save(path);
+            }
+
+            //jsonを取得する
+            StreamReader reader = new StreamReader(path);
+            string json = reader.ReadToEnd();
+            reader.Close();
+
+            //jsonがある場合上書きする
+            if (!string.IsNullOrEmpty(json))
+            {
+                JsonUtility.FromJsonOverwrite(json, _param);
+            }
+
+            //永続化する
             _param.hideFlags = HideFlags.DontSave;
+        }
+
+        private void OnDisable()
+        {
+            //セーブする
+            Save(Application.dataPath.Replace("Assets", "UserSettings/") + "UniPTG/" + GetType().FullName + ".json");
+        }
+
+        private void Save(string path)
+        {
+            //Jsonに変換して書き込み
+            string json = JsonUtility.ToJson(_param);
+            StreamWriter writer = new StreamWriter(path, false);
+            writer.Write(json);
+            writer.Close();
         }
 
         public override float[,] Generate(int size)
         {
             //入力値がある場合はそちらを使用する
-            HeightMapGeneratorParam param = _param;
+            HeightmapGenerationParam param = _param;
             if (_inputParam != null)
             {
                 param = _inputParam;

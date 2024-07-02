@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace UniPTG.Parameters
 {
-    internal class HeightMapGeneratorParam : ScriptableObject
+    internal class HeightmapGenerationParam : ScriptableObject
     {
         public int noiseTypeIndex = 0;
         public int seed = 0;

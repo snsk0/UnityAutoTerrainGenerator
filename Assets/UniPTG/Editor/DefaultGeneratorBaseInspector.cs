@@ -14,7 +14,7 @@ namespace UniPTG.Editors
             serializedObject.Update();
 
             //パラメータオブジェクトを取得
-            HeightMapGeneratorParam param = serializedObject.FindProperty("_param").objectReferenceValue as HeightMapGeneratorParam;
+            HeightmapGenerationParam param = serializedObject.FindProperty("_param").objectReferenceValue as HeightmapGenerationParam;
 
             //設定値の読み込み
             SerializedProperty inputProperty = serializedObject.FindProperty("_inputParam");
@@ -24,7 +24,7 @@ namespace UniPTG.Editors
                 GUI.enabled = false;
 
                 //設定値の上書き
-                param = inputProperty.objectReferenceValue as HeightMapGeneratorParam;
+                param = inputProperty.objectReferenceValue as HeightmapGenerationParam;
             }
 
             param.seed = EditorGUILayout.IntField(new GUIContent("シード値", "シード値を設定します"), param.seed);
@@ -72,7 +72,7 @@ namespace UniPTG.Editors
                 if (!string.IsNullOrEmpty(savePath))
                 {
                     //値をコピーする
-                    HeightMapGeneratorParam outputParam = Instantiate(param);
+                    HeightmapGenerationParam outputParam = Instantiate(param);
 
                     //出力する
                     AssetDatabase.CreateAsset(outputParam, savePath);
