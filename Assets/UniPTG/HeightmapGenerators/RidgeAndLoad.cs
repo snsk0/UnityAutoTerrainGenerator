@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class RidgeAndLoad : MonoBehaviour
+namespace UniPTG.HeightmapGenerators
 {
-    // Start is called before the first frame update
-    void Start()
+    internal class RidgeAndLoad : GeneratorRidge
     {
-        
-    }
+        private protected override float CalculateHeight(float currentAmplitude, float value)
+        {
+            value = base.CalculateHeight(currentAmplitude, value);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+            //ˆê’è’lˆÈ‰º‚Ìê‡ˆ³k‚ğs‚¤
+            float threshold = 0.25f;
+
+            if (value < threshold)
+            {
+                value = Mathf.LinearScaling(value, 0, 1, 0.25f, 0.3f);
+            }
+            return value;
+        }
     }
 }
