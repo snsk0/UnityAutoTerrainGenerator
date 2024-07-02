@@ -37,7 +37,6 @@ namespace UniPTG
             _heightMapGeneratorToEditor = activeHeightmapTypes
                 .Select((type) =>
                 {
-                    Debug.Log(type.Name);
                     HeightmapGeneratorBase generator = ScriptableObject.CreateInstance(type) as HeightmapGeneratorBase;
 
                     //UserSettings‚©‚çƒpƒ‰ƒ[ƒ^‚ğ“Ç‚İ‚Ş

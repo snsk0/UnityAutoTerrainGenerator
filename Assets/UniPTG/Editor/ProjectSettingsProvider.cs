@@ -1,8 +1,6 @@
 #if UNITY_EDITOR
-using Codice.Client.Common;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UniPTG.Editors

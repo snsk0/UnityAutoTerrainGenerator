@@ -13,6 +13,12 @@ namespace UniPTG.HeightmapGenerators
         [SerializeField]
         private protected HeightMapGeneratorParam _inputParam;
 
+        private void OnEnable()
+        {
+            _param = CreateInstance<HeightMapGeneratorParam>();
+            _param.hideFlags = HideFlags.DontSave;
+        }
+
         public override float[,] Generate(int size)
         {
             //“ü—Í’l‚ª‚ ‚éê‡‚Í‚»‚¿‚ç‚ğg—p‚·‚é

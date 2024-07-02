@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace UniPTG
 {
-    [FilePath("/UniPTGSettings.dat", FilePathAttribute.Location.ProjectFolder)]
+    [FilePath("ProjectSettings/UniPTGSettings.asset", FilePathAttribute.Location.ProjectFolder)]
     internal class MonoScriptDatabase : ScriptableSingleton<MonoScriptDatabase>
     {
         [SerializeField]
@@ -30,6 +30,7 @@ namespace UniPTG
             //HeightmapGeneratorà»äOÇîrèúÇ∑ÇÈ
             _heightmapGenerators = _heightmapGenerators.Where((script) => script.GetClass().IsSubclassOf(typeof(HeightmapGeneratorBase))).ToList();
 
+            //âië±âªèàóù
             Save(true);
         }
     }
