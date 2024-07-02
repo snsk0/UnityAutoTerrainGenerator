@@ -1,4 +1,4 @@
-# UnityAutoTerrainGenerator
+# Unity Procedural Terrain Generator (UniPTG)
 ※開発中につきテストコードが含まれています<br>
 
 ## 概要
