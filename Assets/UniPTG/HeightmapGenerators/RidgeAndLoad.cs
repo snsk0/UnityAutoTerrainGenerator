@@ -1,17 +1,24 @@
+using UnityEngine;
+
 namespace UniPTG.HeightmapGenerators
 {
     internal class RidgeAndLoad : GeneratorRidge
     {
-        private protected override float CalculateHeight(float currentAmplitude, float value)
+        [SerializeField]
+        private float _threshold;
+
+        [SerializeField]
+        private float _minloadAmplitude;
+
+        [SerializeField]
+        private float _maxloadAmplitude;
+
+        private protected override float HeightProcessing(float minAmplitude, float maxAmplitude, float value)
         {
-            value = base.CalculateHeight(currentAmplitude, value);
-
-            //ˆê’è’lˆÈ‰º‚Ìê‡ˆ³k‚ğs‚¤
-            float threshold = 0.25f;
-
-            if (value < threshold)
+            //è‡’lˆÈ‰º‚Ìê‡“¹‚É‚·‚é
+            if(_threshold > value)
             {
-                value = Mathf.LinearScaling(value, 0, 1, 0.25f, 0.3f);
+                return Mathf.LinearScaling(value, minAmplitude, maxAmplitude, _minloadAmplitude, _maxloadAmplitude);
             }
             return value;
         }

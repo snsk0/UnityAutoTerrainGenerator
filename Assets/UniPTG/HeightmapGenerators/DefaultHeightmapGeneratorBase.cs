@@ -101,23 +101,44 @@ namespace UniPTG.HeightmapGenerators
                 amplitude *= Mathf.FBmPersistence;
             }
 
+            //高さの最大値と最小値を取得する
+            IEnumerable<float> heightEnum = heightmap.Cast<float>();
+            float minHeight = heightEnum.Min();
+            float maxHeight = heightEnum.Max();
+
             //スケーリング
             if (param.isLinearScaling)
             {
-                IEnumerable<float> heightEnum = heightmap.Cast<float>();
-                float minHeight = heightEnum.Min();
-                float maxHeight = heightEnum.Max();
-
-                for (int x = 0; x < heightmap.GetLength(0); x++)
+                for (int x = 0; x < size; x++)
                 {
-                    for (int y = 0; y < heightmap.GetLength(1); y++)
+                    for (int y = 0; y < size; y++)
                     {
                         heightmap[x, y] = Mathf.LinearScaling(heightmap[x, y], minHeight, maxHeight, param.minLinearScale, param.maxLinearScale);
+                    }
+                }
+            }
+
+            for(int x = 0; x < size; x++)
+            {
+                for(int y = 0; y < size; y++)
+                {
+                    if (param.isLinearScaling)
+                    {
+                        heightmap[x, y] = HeightProcessing(param.minLinearScale, param.maxLinearScale, heightmap[x, y]);
+                    }
+                    else
+                    {
+                        heightmap[x, y] = HeightProcessing(minHeight, maxHeight, heightmap[x, y]);
                     }
                 }
             }
         }
 
         private protected abstract float CalculateHeight(float currentAmplitude, float value);
+
+        private protected virtual float HeightProcessing(float minAmplitude, float maxAmplitude, float value)
+        {
+            return value;
+        }
     }
 }
