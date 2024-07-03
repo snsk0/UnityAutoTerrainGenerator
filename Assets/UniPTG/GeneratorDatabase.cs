@@ -80,12 +80,6 @@ namespace UniPTG
             IEnumerable<HeightmapGeneratorBase> heightmapGenerators = _heightMapGeneratorToEditor.Keys;
             IEnumerable<Editor> heightmapEditors = _heightMapGeneratorToEditor.Values;
 
-            //データを解放
-            _noiseGeneratorToEditor.Clear();
-            _noiseGeneratorToEditor = null;
-            _heightMapGeneratorToEditor.Clear();
-            _heightMapGeneratorToEditor = null;
-
             //Editorを解放する
             foreach (Editor editor in noiseEditors)
             {
@@ -102,15 +96,21 @@ namespace UniPTG
                 string json = JsonUtility.ToJson(generator);
                 EditorUserSettings.SetConfigValue(generator.GetType().FullName, json);
 
-                UnityEngine.Object.Destroy(generator);
+                UnityEngine.Object.DestroyImmediate(generator);
             }
             foreach(HeightmapGeneratorBase generator in heightmapGenerators)
             {
                 string json = JsonUtility.ToJson(generator);
                 EditorUserSettings.SetConfigValue(generator.GetType().FullName, json);
 
-                UnityEngine.Object.Destroy(generator);
+                UnityEngine.Object.DestroyImmediate(generator);
             }
+
+            //データを解放
+            _noiseGeneratorToEditor.Clear();
+            _noiseGeneratorToEditor = null;
+            _heightMapGeneratorToEditor.Clear();
+            _heightMapGeneratorToEditor = null;
         }
 
         internal static IReadOnlyList<HeightmapGeneratorBase> GetHeightmapGenerators()
