@@ -16,6 +16,8 @@ namespace UniPTG.Editors
             //パラメータオブジェクトを取得
             HeightmapGenerationParam param = serializedObject.FindProperty("_param").objectReferenceValue as HeightmapGenerationParam;
 
+            Debug.Log(serializedObject.FindProperty("_param").objectReferenceInstanceIDValue);
+
             //設定値の読み込み
             SerializedProperty inputProperty = serializedObject.FindProperty("_inputParam");
             EditorGUILayout.PropertyField(inputProperty, new GUIContent("入力", "HeightMapParamを入力します"));

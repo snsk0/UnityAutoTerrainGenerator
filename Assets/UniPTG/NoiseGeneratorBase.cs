@@ -6,5 +6,7 @@ namespace UniPTG
     {
         internal abstract void InitState();
         public abstract float GetValue(float x, float y);
+
+        public abstract void UpdateState();
     }
 }

@@ -25,16 +25,21 @@ namespace UniPTG.NoiseGenerators
                 Random.InitState(_seed);
             }
 
-            float xSeed = Random.Range(0f, NoiseFrequency);
-            float ySeed = Random.Range(0f, NoiseFrequency);
-
-            //シード値を保存
-            _offset = new Vector2(xSeed, ySeed);
+            UpdateState();
         }
 
         public override float GetValue(float x, float y)
         {
             return UnityEngine.Mathf.PerlinNoise(x + _offset.x, y + _offset.y);
+        }
+
+        public override void UpdateState()
+        {
+            float xSeed = Random.Range(0f, NoiseFrequency);
+            float ySeed = Random.Range(0f, NoiseFrequency);
+
+            //シード値を保存
+            _offset = new Vector2(xSeed, ySeed);
         }
     }
 }

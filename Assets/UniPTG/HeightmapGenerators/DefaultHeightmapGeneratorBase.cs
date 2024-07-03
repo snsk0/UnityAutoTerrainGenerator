@@ -51,12 +51,17 @@ namespace UniPTG.HeightmapGenerators
 
             //永続化する
             _param.hideFlags = HideFlags.DontSave;
+
+            Debug.Log(_param.GetInstanceID());
         }
 
         private void OnDisable()
         {
             //セーブする
             Save(Application.dataPath.Replace("Assets", "UserSettings/") + "UniPTG/" + GetType().FullName + ".json");
+
+            //paramを破棄する
+            DestroyImmediate(_param);
         }
 
         private void Save(string path)
@@ -99,6 +104,9 @@ namespace UniPTG.HeightmapGenerators
 
                 frequency *= Mathf.FBmFrequencyRate;
                 amplitude *= Mathf.FBmPersistence;
+
+                //ノイズ状態の更新
+                noiseReader.UpdateState();
             }
 
             //高さの最大値と最小値を取得する
