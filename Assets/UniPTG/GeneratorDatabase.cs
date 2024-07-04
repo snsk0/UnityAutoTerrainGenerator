@@ -45,7 +45,7 @@ namespace UniPTG
                     string json = EditorUserSettings.GetConfigValue(type.FullName);
                     if (!string.IsNullOrEmpty(json))
                     {
-                        JsonUtility.FromJsonOverwrite(json, generator);
+                        EditorJsonUtility.FromJsonOverwrite(json, generator);
                     }
 
                     //‰i‘±‰»‚·‚é
@@ -63,7 +63,7 @@ namespace UniPTG
                     string json = EditorUserSettings.GetConfigValue(type.FullName);
                     if (!string.IsNullOrEmpty(json))
                     {
-                        JsonUtility.FromJsonOverwrite(json, generator);
+                        EditorJsonUtility.FromJsonOverwrite(json, generator);
                     }
 
                     //‰i‘±‰»‚·‚é
@@ -93,14 +93,14 @@ namespace UniPTG
             //Generator‚ð•Û‘¶‚µ‚Ä‚©‚ç‰ð•ú‚·‚é
             foreach(NoiseGeneratorBase generator in noiseGenerators)
             {
-                string json = JsonUtility.ToJson(generator);
+                string json = EditorJsonUtility.ToJson(generator);
                 EditorUserSettings.SetConfigValue(generator.GetType().FullName, json);
 
                 UnityEngine.Object.DestroyImmediate(generator);
             }
             foreach(HeightmapGeneratorBase generator in heightmapGenerators)
             {
-                string json = JsonUtility.ToJson(generator);
+                string json = EditorJsonUtility.ToJson(generator);
                 EditorUserSettings.SetConfigValue(generator.GetType().FullName, json);
 
                 UnityEngine.Object.DestroyImmediate(generator);

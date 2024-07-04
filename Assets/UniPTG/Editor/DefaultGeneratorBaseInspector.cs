@@ -14,9 +14,7 @@ namespace UniPTG.Editors
             serializedObject.Update();
 
             //パラメータオブジェクトを取得
-            HeightmapGenerationParam param = serializedObject.FindProperty("_param").objectReferenceValue as HeightmapGenerationParam;
-
-            Debug.Log(serializedObject.FindProperty("_param").objectReferenceInstanceIDValue);
+            HeightmapGenerationParameter param = (HeightmapGenerationParameter)serializedObject.FindProperty("_param").boxedValue;
 
             //設定値の読み込み
             SerializedProperty inputProperty = serializedObject.FindProperty("_inputParam");
@@ -26,7 +24,7 @@ namespace UniPTG.Editors
                 GUI.enabled = false;
 
                 //設定値の上書き
-                param = inputProperty.objectReferenceValue as HeightmapGenerationParam;
+                param = (inputProperty.objectReferenceValue as HeightmapGenerationParamObject).parameter;
             }
 
             param.frequency = EditorGUILayout.FloatField(new GUIContent("周波数", "使用するノイズの周波数を設定します"), param.frequency);
@@ -64,6 +62,11 @@ namespace UniPTG.Editors
 
             param.octaves = EditorGUILayout.IntField(new GUIContent("オクターブ", "非整数ブラウン運動を利用してオクターブの数値の回数ノイズを重ねます"), param.octaves);
 
+            if(inputProperty.objectReferenceValue == null)
+            {
+                //入力がないとき保存する
+                serializedObject.FindProperty("_param").boxedValue = param;
+            }
             serializedObject.ApplyModifiedProperties();
 
             if (GUILayout.Button(new GUIContent("設定値を出力する", "設定値をアセットファイルに保存します")))
@@ -72,7 +75,8 @@ namespace UniPTG.Editors
                 if (!string.IsNullOrEmpty(savePath))
                 {
                     //値をコピーする
-                    HeightmapGenerationParam outputParam = Instantiate(param);
+                    HeightmapGenerationParamObject outputParam = CreateInstance<HeightmapGenerationParamObject>();
+                    outputParam.parameter = param;
 
                     //出力する
                     AssetDatabase.CreateAsset(outputParam, savePath);
