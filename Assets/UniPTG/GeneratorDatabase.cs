@@ -15,6 +15,13 @@ namespace UniPTG
 
         static GeneratorDatabase()
         {
+            MonoScriptDatabase.instance.OnUpdateDatabase += () =>
+            {
+                Debug.Log("SaveAndLoad");
+                SaveAndDispose();
+                Load();
+            };
+
             AssemblyReloadEvents.beforeAssemblyReload += () =>
             {
                 Debug.Log("SaveAndDispose");

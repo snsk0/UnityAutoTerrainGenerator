@@ -15,6 +15,8 @@ namespace UniPTG
         [SerializeField]
         private List<MonoScript> _heightmapGenerators;
 
+        internal event Action OnUpdateDatabase;
+
         internal IReadOnlyList<Type> GetNoiseGeneratorTypes()
         {
             return _noiseGenerators?.Where((script) => script != null).Select((script) => script.GetClass()).ToList().AsReadOnly();
@@ -41,6 +43,8 @@ namespace UniPTG
 
             //âië±âªèàóù
             Save(true);
+
+            OnUpdateDatabase.Invoke();
         }
     }
 }
