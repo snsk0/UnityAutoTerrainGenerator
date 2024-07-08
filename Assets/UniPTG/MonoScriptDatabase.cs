@@ -37,32 +37,7 @@ namespace UniPTG
 
         internal void Update()
         {
-            //generator以外null代入
-            for(int i = 0; i < _noiseGenerators.Count; i++)
-            {
-                if(_noiseGenerators[i] == null)
-                {
-                    continue;
-                }
-
-                if (!_noiseGenerators[i].GetClass().IsSubclassOf(typeof(NoiseGeneratorBase))) 
-                {
-                    _noiseGenerators[i] = null;
-                }
-            }
-
-            for (int i = 0; i < _heightmapGenerators.Count; i++)
-            {
-                if (_heightmapGenerators == null)
-                {
-                    continue;
-                }
-
-                if (!_heightmapGenerators[i].GetClass().IsSubclassOf(typeof(HeightmapGeneratorBase)))
-                {
-                    _heightmapGenerators[i] = null;
-                }
-            }
+            //TODOキャッシュを更新する
 
             //永続化処理
             Save(true);
