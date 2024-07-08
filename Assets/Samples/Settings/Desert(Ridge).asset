@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 095daa787646f3f4db98827941d1804d, type: 3}
-  m_Name: parameters01
+  m_Name: Desert(Ridge)
   m_EditorClassIdentifier: 
-  noiseTypeIndex: 0
-  seed: 543543
-  frequency: 5
-  isLinearScaling: 1
-  amplitude: 1
-  minLinearScale: 0.3410596
-  maxLinearScale: 0.71854305
-  octaves: 7
+  parameter:
+    frequency: 1.25
+    isLinearScaling: 1
+    amplitude: 0
+    minLinearScale: 0.19148937
+    maxLinearScale: 0.49999997
+    octaves: 2
