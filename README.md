@@ -1,6 +1,10 @@
 # Unity Procedural Terrain Generator (UniPTG)
 ※開発中につきテストコードが含まれています<br>
 
+### 注意事項
+現在最新のリファレンスはリポジトリ内の「LatestReadme.pdf」です。<br>
+使用の際はそちらをご使用ください。
+
 ## 概要
 - 地形の自動生成を主目的としたツールです<br>
 - 現在はUnityのMathf.PerlinNoise関数を使用したHeightMapの生成のみが可能です
